@@ -1,0 +1,17 @@
+{
+  "name": "go-url-shortener",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "go:dev": "go run ./src/*.go",
+    "go:fmt": "go fmt ./src",
+    "dev": "nodemon -e go --watch src --exec 'yarn go:fmt && yarn go:dev'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
