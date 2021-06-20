@@ -31,11 +31,30 @@ func main() {
 	routes := mux.NewRouter()
 
 	routes.HandleFunc("/shorten-url", func(w http.ResponseWriter, r *http.Request) {
-		sUrl := models.ShortenUrl{}
-		json.NewDecoder(r.Body).Decode(&sUrl)
+		sUrlReq := models.ShortenUrl{}
+		json.NewDecoder(r.Body).Decode(&sUrlReq)
 
-		shortenUrl := sUrl.GetShortenUrl()
-		w.Write([]byte(shortenUrl))
+		var sUrl models.ShortenUrl
+		db.Where("url = ?", sUrlReq.Url).Find(&sUrl)
+
+		if sUrl.ID != 0 {
+			w.WriteHeader(http.StatusConflict)
+			json.NewEncoder(w).Encode(struct {
+				Message string `json:"message"`
+			}{
+				Message: fmt.Sprintf("'%s' has already had hashedUrl", sUrlReq.Url),
+			})
+			return
+		}
+
+		shortenUrl := models.ShortenUrl{
+			HashedUrl: models.GetShortenUrl(),
+			Url:       sUrlReq.Url,
+		}
+
+		db.Create(&shortenUrl)
+
+		json.NewEncoder(w).Encode(shortenUrl)
 	}).Methods(http.MethodPost)
 
 	routes.HandleFunc("/{shortenUrl:.+}", func(w http.ResponseWriter, r *http.Request) {
