@@ -1,7 +1,8 @@
-package main
+package models
 
 import (
 	"fmt"
+	"github.com/dchest/uniuri"
 )
 
 type ShortenUrl struct {
@@ -10,4 +11,8 @@ type ShortenUrl struct {
 
 func (s ShortenUrl) PrintName() {
 	fmt.Println(s.Url)
+}
+
+func (s ShortenUrl) GetShortenUrl() string {
+	return uniuri.New()
 }
