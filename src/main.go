@@ -14,13 +14,19 @@ import (
 
 func main() {
 	dsn := "host=localhost user=postgres password=postgres dbname=shortenurl port=5432 sslmode=disable TimeZone=Asia/Bangkok"
-	_, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		fmt.Println("[X]:: DB not connect")
 	}
 
 	fmt.Println("[√]:: DB Connected")
+
+	// migration
+	isShortenUrlTableExisted := db.Migrator().HasTable(&models.ShortenUrl{})
+	if isShortenUrlTableExisted != true {
+		db.Migrator().CreateTable(&models.ShortenUrl{})
+	}
 
 	routes := mux.NewRouter()
 
