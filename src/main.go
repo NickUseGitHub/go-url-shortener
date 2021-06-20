@@ -38,5 +38,12 @@ func main() {
 		w.Write([]byte(shortenUrl))
 	}).Methods(http.MethodPost)
 
+	routes.HandleFunc("/{shortenUrl:.+}", func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		shortenUrl := vars["shortenUrl"]
+
+		w.Write([]byte(fmt.Sprintf("Your shortenUrl is '%s'", shortenUrl)))
+	}).Methods(http.MethodGet)
+
 	log.Fatal(http.ListenAndServe(":8000", routes))
 }
