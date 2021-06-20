@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "get:port-service": "echo $(lsof -nP -i4TCP:8000 | grep LISTEN) | awk -F'[\" \"]' '{print $2}'",
+    "kill:inused-port-service": "kill $(yarn get:port-service)",
     "go:dev": "go run ./src/*.go",
     "go:fmt": "go fmt ./src",
-    "dev": "nodemon -e go --watch src --exec 'yarn go:fmt && yarn go:dev'"
+    "dev": "nodemon -e go --watch src --exec '(yarn go:fmt && yarn kill:inused-port-service); yarn go:dev'"
   },
   "keywords": [],
   "author": "",
