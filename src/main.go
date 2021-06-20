@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/dchest/uniuri"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -15,7 +16,8 @@ func main() {
 
 		json.NewDecoder(r.Body).Decode(&sUrl)
 
-		json.NewEncoder(w).Encode(sUrl)
+		s := uniuri.New()
+		w.Write([]byte(s))
 	}).Methods(http.MethodPost)
 
 	log.Fatal(http.ListenAndServe(":8000", routes))
