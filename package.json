@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "go:dev": "go run ./src/*.go",
+    "go:fmt": "go fmt ./src",
+    "dev": "nodemon -e go --watch src --exec 'yarn go:fmt && yarn go:dev'"
   },
   "keywords": [],
   "author": "",

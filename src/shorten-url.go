@@ -11,4 +11,3 @@ type ShortenUrl struct {
 func (s ShortenUrl) PrintName() {
 	fmt.Println(s.Url)
 }
-
